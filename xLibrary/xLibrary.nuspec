@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>xLibrary</id>
+    <version>
+      0.9.1.12
+    </version>
+    <authors>Alexander Mantzoukas</authors>
+    <owners>Alexander Mantzoukas</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://www.msd.am/xTags/</projectUrl>
+    <iconUrl>http://www.msd.am/Content/Site/Images/MSD/xtags.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      xTags Library is an xml extension to the web building block: Tags.
+      Allows the developer to build scalable and distributed templated UI with databind, REST and other awesome features.
+      This package includes only the C# implementation.
+    </description>
+    <releaseNotes>
+      Version update 0.9.1.12 (Automatic release)
+    </releaseNotes>
+    <copyright>Copyright Alexander Mantzoukas, Modern Software Design 2013</copyright>
+    <tags>xTags library, JavaScript, Javascript library, C#, ASP.NET, REST, Databind, Observables, Tracking, Offline</tags>
+    <dependencies>
+      <dependency id="Chains" version="0.9.1.12" />
+      <dependency id="Newtonsoft.Json" version="4.5.11" />
+    </dependencies>
+  </metadata>
+</package>

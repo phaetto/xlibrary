@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0F3720BD-67FE-42F1-9D79-BFC036B73897}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>xLibrary</RootNamespace>
+    <AssemblyName>xLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
+    <OutputPath>bin\Deploy\</OutputPath>
+    <DefineConstants>TRACE;DEPLOY</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Integration Test|AnyCPU'">
+    <OutputPath>bin\Integration Test\</OutputPath>
+    <DefineConstants>TRACE;INTEGRATIONTEST</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Chains, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Chains.0.9.1.12\lib\Chains.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\CheckIfRestRequest.cs" />
+    <Compile Include="Actions\CreateTag.cs" />
+    <Compile Include="Actions\Databind.cs" />
+    <Compile Include="Actions\DownloadOrCopyFiles.cs" />
+    <Compile Include="Actions\FindTag.cs" />
+    <Compile Include="Actions\LoadLibrary.cs" />
+    <Compile Include="Actions\LoadTag.cs" />
+    <Compile Include="Actions\RenderAsBookmarklet.cs" />
+    <Compile Include="Actions\RenderAsGoogleGadget.cs" />
+    <Compile Include="Actions\RenderAsJavascriptClientModel.cs" />
+    <Compile Include="Actions\RenderHtml.cs" />
+    <Compile Include="Actions\RenderJsonpIfRequested.cs" />
+    <Compile Include="Actions\RenderJsonValues.cs" />
+    <Compile Include="Actions\RenderOfflineManifest.cs" />
+    <Compile Include="Actions\RenderPageBodyCss.cs" />
+    <Compile Include="Actions\RenderPageBodyCssJsHtml.cs" />
+    <Compile Include="Actions\RenderPageHeadCss.cs" />
+    <Compile Include="Actions\RenderPageHeadCssAsExternalFile.cs" />
+    <Compile Include="Actions\RenderPageHeadCssAsLink.cs" />
+    <Compile Include="Actions\RenderPageJavascript.cs" />
+    <Compile Include="Actions\RenderPageJavascriptAsExternalFile.cs" />
+    <Compile Include="Actions\RenderPageJavascriptAsLink.cs" />
+    <Compile Include="Actions\RenderServerLibraryHelp.cs" />
+    <Compile Include="Actions\SaveTag.cs" />
+    <Compile Include="Actions\ServeTextFromCustomUri.cs" />
+    <Compile Include="Actions\ServeXmlFromCustomUri.cs" />
+    <Compile Include="HttpResultContextWithxContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="xContext.cs" />
+    <Compile Include="xTag.cs" />
+    <Compile Include="xTagContext.cs" />
+    <Compile Include="xTagMode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
