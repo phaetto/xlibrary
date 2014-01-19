@@ -3,7 +3,7 @@
   <metadata>
     <id>xLibrary</id>
     <version>
-      0.9.1.12
+      {Version}
     </version>
     <authors>Alexander Mantzoukas</authors>
     <owners>Alexander Mantzoukas</owners>
@@ -17,7 +17,7 @@
       This package includes only the C# implementation.
     </description>
     <releaseNotes>
-      Version update 0.9.1.12 (Automatic release)
+      {ReleaseNotes}
     </releaseNotes>
     <copyright>Copyright Alexander Mantzoukas, Modern Software Design 2013</copyright>
     <tags>xTags library, JavaScript, Javascript library, C#, ASP.NET, REST, Databind, Observables, Tracking, Offline</tags>
