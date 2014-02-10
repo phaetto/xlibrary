@@ -4,6 +4,7 @@
     using System.Xml;
     using Chains.Play.Web;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Newtonsoft.Json;
     using xLibrary;
     using xLibrary.Actions;
 
@@ -425,7 +426,38 @@
             Assert.IsNull(result.ResponseCookies["b"]);
         }
 
-        // xtags-values-only
+        [TestMethod]
+        public void CheckIfRestRequest_Session_WhenAjaxIsValidValuesOnlyRequest_ThenJsonResponseRendered()
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml("<r><template id='a' mode='Server' /></r>");
+
+            var validToken = "valid-token";
+
+            var httpContextInfo = new HttpContextInfo();
+            httpContextInfo.QueryString.Add("xtags-xajax", "xtags-xajax");
+            httpContextInfo.QueryString.Add("xtags-http-method", "GET");
+            httpContextInfo.QueryString.Add("xtags-id", "a");
+            httpContextInfo.QueryString.Add("xtags-token", validToken);
+            httpContextInfo.QueryString.Add("callback", "callbackMethod");
+            httpContextInfo.QueryString.Add("xtags-values-only", "xtags-values-only");
+
+            httpContextInfo.Session("a", validToken);
+
+            var result =
+                new xContext(httpContextInfo)
+                    .Do(new LoadLibrary(doc))
+                    .Do(new CreateTag("template"))
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    {
+                        Assert.IsTrue(isAjax);
+                        Assert.AreEqual(tag.Id, "a");
+                    }), new RenderHtml());
+
+            var responseText = result.ResponseText.ToString();
+            var json = JsonConvert.DeserializeObject(responseText);
+            Assert.AreEqual(result.ContentType, "text/plain");
+        }
 
         private void EmptyGetHandler(xTag xtag, bool iAjax)
         {
