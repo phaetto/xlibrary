@@ -390,7 +390,12 @@
                     }), new RenderHtml())
                     .Do(new RenderJsonpIfRequested());
 
-            // var responseText = result.ResponseText.ToString();
+            var responseText = result.ResponseText.ToString();
+
+            Assert.IsTrue(responseText.StartsWith("callbackMethod(\"(function(){"));
+            Assert.IsTrue(responseText.Contains("'a'"));
+            Assert.IsTrue(responseText.Contains("'" + httpContextInfo.PageUri() + "'"));
+            Assert.IsTrue(responseText.EndsWith("})();\");"));
             Assert.AreEqual(result.ContentType, "text/javascript");
         }
 
