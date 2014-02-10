@@ -1,7 +1,6 @@
 ﻿namespace xLibrary.Actions
 {
     using System.Xml;
-
     using Chains;
 
     public class LoadLibrary : IChainableAction<xContext, xContext>
