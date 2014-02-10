@@ -89,7 +89,6 @@
     <Compile Include="DatabindBehavior.cs" />
     <Compile Include="OfflineManifestRendering.cs" />
     <Compile Include="PersistenceBehavior.cs" />
-    <Compile Include="HttpContextInfoBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xLibrary\xLibrary.csproj">
