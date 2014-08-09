@@ -1,5 +1,5 @@
 <Database>
   <Table name="SePaLoPa">
-    <Record PackageName="Developer.MicroServicesStarter" Id="243" VersionLabel="0.1.4.4" />
+    <Record PackageName="Developer.MicroServicesStarter" Id="273" VersionLabel="0.1.6.3" />
   </Table>
 </Database>
