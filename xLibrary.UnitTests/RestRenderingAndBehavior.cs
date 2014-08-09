@@ -159,10 +159,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (context, isAjax) =>
                     {
                         Assert.IsTrue(isAjax);
-                        Assert.AreEqual(tag.Id, "a");
+                        Assert.AreEqual(context.xTag.Id, "a");
                     }), new RenderHtml());
 
             var responseText = result.ResponseText.ToString();
@@ -195,10 +195,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (context, isAjax) =>
                     {
                         Assert.IsTrue(isAjax);
-                        Assert.AreEqual(tag.Id, "a");
+                        Assert.AreEqual(context.xTag.Id, "a");
                     }, useCsrfCookies: true), new RenderHtml());
 
             var responseText = result.ResponseText.ToString();
@@ -229,10 +229,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (context, isAjax) =>
                     {
                         Assert.IsFalse(isAjax);
-                        Assert.AreEqual(tag.Id, "a");
+                        Assert.AreEqual(context.xTag.Id, "a");
                     }), new RenderHtml());
 
             var responseText = result.ResponseText.ToString();
@@ -290,10 +290,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onPost: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onPost: (context, isAjax) =>
                     {
                         Assert.IsFalse(isAjax);
-                        Assert.AreEqual(tag.Id, "a");
+                        Assert.AreEqual(context.xTag.Id, "a");
                     }), new RenderHtml());
 
             var responseText = result.ResponseText.ToString();
@@ -384,10 +384,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (context, isAjax) =>
                     {
                         Assert.IsTrue(isAjax);
-                        Assert.AreEqual(tag.Id, "a");
+                        Assert.AreEqual(context.xTag.Id, "a");
                     }), new RenderHtml())
                     .Do(new RenderJsonpIfRequested());
 
@@ -415,10 +415,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (context, isAjax) =>
                     {
                         Assert.IsTrue(isAjax);
-                        Assert.AreEqual(tag.Id, "b");
+                        Assert.AreEqual(context.xTag.Id, "b");
                     }, csrfProtectionEnabled: false), new RenderHtml());
 
             Assert.AreEqual(result.ContentType, "text/plain");
@@ -448,10 +448,10 @@
                 new xContext(httpContextInfo)
                     .Do(new LoadLibrary(doc))
                     .Do(new CreateTag("template"))
-                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (tag, isAjax) =>
+                    .DoFirst(x => x != null, new CheckIfRestRequest(onGet: (context, isAjax) =>
                     {
                         Assert.IsTrue(isAjax);
-                        Assert.AreEqual(tag.Id, "a");
+                        Assert.AreEqual(context.xTag.Id, "a");
                     }), new RenderHtml());
 
             var responseText = result.ResponseText.ToString();
@@ -459,7 +459,7 @@
             Assert.AreEqual(result.ContentType, "text/plain");
         }
 
-        private void EmptyGetHandler(xTag xtag, bool iAjax)
+        private void EmptyGetHandler(xTagContext context, bool iAjax)
         {
         }
     }

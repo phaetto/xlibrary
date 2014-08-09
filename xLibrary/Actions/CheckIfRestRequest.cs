@@ -17,20 +17,20 @@
         public readonly bool csrfProtectionEnabled;
         public readonly bool checkAlsoChildrenForREST;
         public readonly bool skipCheckForId;
-        public readonly Action<xTag, bool> onGet;
-        public readonly Action<xTag, bool> onPost;
-        public readonly Action<xTag, bool> onPut;
-        public readonly Action<xTag, bool> onDelete;
-        public readonly Action<xTag, bool, string> onCustomVerb;
-        public readonly Action<xTag, bool, string> onAjax;
+        public readonly Action<xTagContext, bool> onGet;
+        public readonly Action<xTagContext, bool> onPost;
+        public readonly Action<xTagContext, bool> onPut;
+        public readonly Action<xTagContext, bool> onDelete;
+        public readonly Action<xTagContext, bool, string> onCustomVerb;
+        public readonly Action<xTagContext, bool, string> onAjax;
 
         public CheckIfRestRequest(
-            Action<xTag, bool> onGet = null,
-            Action<xTag, bool> onPost = null,
-            Action<xTag, bool> onPut = null,
-            Action<xTag, bool> onDelete = null,
-            Action<xTag, bool, string> onCustomVerb = null,
-            Action<xTag, bool, string> onAjax = null,
+            Action<xTagContext, bool> onGet = null,
+            Action<xTagContext, bool> onPost = null,
+            Action<xTagContext, bool> onPut = null,
+            Action<xTagContext, bool> onDelete = null,
+            Action<xTagContext, bool, string> onCustomVerb = null,
+            Action<xTagContext, bool, string> onAjax = null,
             bool csrfProtectionEnabled = true,
             bool renewCsrfTokensForEachRequest = true,
             bool useCsrfCookies = false,
@@ -154,16 +154,16 @@
                 if (isSelfCalling && !isTokenMismatch)
                 {
                     if (method == "GET" && onGet != null)
-                        onGet(xtag, isAjax);
+                        onGet(new xTagContext(context, xtag), isAjax);
                     if (method == "POST" && onPost != null)
-                        onPost(xtag, isAjax);
+                        onPost(new xTagContext(context, xtag), isAjax);
                     if (method == "PUT" && onPut != null)
-                        onPut(xtag, isAjax);
+                        onPut(new xTagContext(context, xtag), isAjax);
                     if (method == "DELETE" && onDelete != null)
-                        onDelete(xtag, isAjax);
+                        onDelete(new xTagContext(context, xtag), isAjax);
 
                     if (method != "GET" && method != "POST" && method != "PUT" && method != "DELETE" && onCustomVerb != null)
-                        onCustomVerb(xtag, isAjax, method);
+                        onCustomVerb(new xTagContext(context, xtag), isAjax, method);
                 }
 
                 // Form posting xtags-return-url
@@ -175,7 +175,7 @@
                 if (isSelfCalling && isAjax)
                 {
                     if (!isTokenMismatch && onAjax != null)
-                        onAjax(xtag, isAjax, method);
+                        onAjax(new xTagContext(context, xtag), isAjax, method);
 
                     if (argumentsCollection["xtags-token"] == "xtags-token" || isTokenMismatch)
                     {
