@@ -55,7 +55,7 @@
   <ItemGroup>
     <Reference Include="Chains, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Chains.0.9.1.12\lib\Chains.dll</HintPath>
+      <HintPath>..\packages\Chains.0.9.3.1\lib\Chains.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
