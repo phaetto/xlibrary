@@ -103,5 +103,30 @@
             Assert.AreEqual(result.xTag.Children[1].Children[0].Text, "2");
             Assert.AreEqual(result.xTag.Children[2].Children[0].Text, "3");
         }
+
+        [TestMethod]
+        public void Datasource_WhenBoundToArrayOfObjectsAndADatasourceIsIncluded_ThenNodeHaveTheText()
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml("<r><template id='a'><span>Not bound</span><span datasource='BoundSource'><span>#{this.data()}</span></span></template></r>");
+
+            object boundObject = new
+                                 {
+                                     BoundSource = new
+                                                   {
+                                                       data = "One"
+                                                   }
+                                 };
+
+            var result =
+                new xContext().Do(new LoadLibrary(doc))
+                              .Do(new CreateTag("template"))
+                              .Do(new Databind(boundObject));
+
+            Assert.AreEqual(2, result.xTag.Children.Count);
+            Assert.AreEqual(1, result.xTag.Children[1].Children.Count);
+            Assert.AreEqual(1, result.xTag.Children[1].Children[0].Children.Count);
+            Assert.AreEqual("One", result.xTag.Children[1].Children[0].Children[0].Text);
+        }
     }
 }

@@ -15,17 +15,17 @@
         private static Regex propertiesRE = new Regex(@"this(\.([a-zA-Z0-9\.]+)\(\)|\[['""]([a-zA-Z0-9\.]+)['""]\](\(\))?)", RegexOptions.Compiled);
 
         public readonly Func<xTag, object> customDataSource;
-        public readonly object dataObject;
+        public readonly object boundDataObject;
 
-        public Databind(object dataObject = null, Func<xTag, object> customDataSource = null)
+        public Databind(object boundDataObject = null, Func<xTag, object> customDataSource = null)
         {
-            this.dataObject = dataObject;
+            this.boundDataObject = boundDataObject;
             this.customDataSource = customDataSource;
         }
 
         public xTagContext Act(xTagContext context)
         {
-            context.xTag.DataObject = dataObject;
+            context.xTag.DataObject = boundDataObject;
             DatabindMethod(context.xTag, context.Parent);
 
             return context;
@@ -43,9 +43,9 @@
 
         void DatabindMethod(xTag xtag, xContext context)
         {
-            var o = GetDataObject(xtag);
+            var dataObject = GetDataObject(xtag);
 
-            if (o == null)
+            if (dataObject == null)
             {
                 return;
             }
@@ -55,7 +55,7 @@
             {
                 if (!string.IsNullOrEmpty(xtag.DefaultAttributes[key]) && bindingRE.IsMatch(xtag.DefaultAttributes[key]))
                 {
-                    xtag.Attributes[key] = BindText(xtag.DefaultAttributes[key], o);
+                    xtag.Attributes[key] = BindText(xtag.DefaultAttributes[key], dataObject);
                 }
             }
 
@@ -64,15 +64,18 @@
             {
                 if (!string.IsNullOrEmpty(xtag.DefaultData[key]) && bindingRE.IsMatch(xtag.DefaultData[key]))
                 {
-                    xtag.Data[key] = BindText(xtag.DefaultData[key], o);
+                    xtag.Data[key] = BindText(xtag.DefaultData[key], dataObject);
                 }
             }
 
             // Bind text
             if (xtag.TagName == "#text" && bindingRE.IsMatch(xtag.DefaultText))
-                xtag.Text = BindText(xtag.DefaultText, o);
+            {
+                xtag.Text = BindText(xtag.DefaultText, dataObject);
+            }
 
-            var boundObject = o;
+            var boundObject = dataObject;
+            var datasourced = false;
             if (!string.IsNullOrEmpty(xtag.DataSource) && xtag.DataSource != "xtag")
             {
                 boundObject = null;
@@ -83,39 +86,44 @@
 
                 if (boundObject == null)
                 {
-                    if (o is IDictionary)
+                    if (dataObject is IDictionary)
                     {
-                        if ((o as IDictionary).Contains(xtag.DataSource))
+                        if ((dataObject as IDictionary).Contains(xtag.DataSource))
                         {
-                            boundObject = (o as IDictionary)[xtag.DataSource];
+                            boundObject = (dataObject as IDictionary)[xtag.DataSource];
                         }
                     }
-                    else if (o is XmlNode)
+                    else if (dataObject is XmlNode)
                     {
-                        if (o is XmlDocument)
+                        if (dataObject is XmlDocument)
                         {
-                            o = (o as XmlDocument).DocumentElement;
+                            dataObject = (dataObject as XmlDocument).DocumentElement;
                         }
 
                         boundObject = xtag.DataSource == "ChildNodes"
-                            ? (o as XmlNode).ChildNodes
-                            : (o as XmlNode).SelectNodes(xtag.DataSource);
+                            ? (dataObject as XmlNode).ChildNodes
+                            : (dataObject as XmlNode).SelectNodes(xtag.DataSource);
                     }
                     else
                     {
-                        var pi = o.GetType().GetProperty(xtag.DataSource);
+                        var pi = dataObject.GetType().GetProperty(xtag.DataSource);
                         if (pi != null)
                         {
-                            boundObject = pi.GetValue(o, null);
+                            boundObject = pi.GetValue(dataObject, null);
                         }
                         else
                         {
-                            var fi = o.GetType().GetField(xtag.DataSource);
+                            var fi = dataObject.GetType().GetField(xtag.DataSource);
                             if (fi != null)
                             {
-                                boundObject = fi.GetValue(o);
+                                boundObject = fi.GetValue(dataObject);
                             }
                         }
+                    }
+
+                    if (boundObject != null)
+                    {
+                        datasourced = true;
                     }
                 }
             }
@@ -162,7 +170,38 @@
                         }
                     }
                 }
-                // Do not remake if a single object exists (has been already created)
+                else
+                {
+                    // Do not remake if a single object exists (has been already created)
+                    if (datasourced)
+                    {
+                        // Delete children and remake
+                        while (xtag.Children.Count > 0)
+                        {
+                            xtag.Children[xtag.Children.Count - 1].Delete();
+                        }
+
+                        for (var n = 0; n < xtag.XmlNode.ChildNodes.Count; ++n)
+                        {
+                            if (xtag.XmlNode.NodeType == XmlNodeType.Element
+                                && xtag.XmlNode.Name.ToLowerInvariant() != "data")
+                            {
+                                var cTag = context.MakeTemplateNode(
+                                    xtag.XmlNode.ChildNodes[n],
+                                    xtag.MainTag ?? xtag,
+                                    xtag,
+                                    xtag.RootTag,
+                                    false);
+                                if (cTag != null)
+                                {
+                                    cTag.ParentIndex = xtag.Children.Count;
+                                    cTag.DataObject = boundObject;
+                                    xtag.Children.Add(cTag);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else if (boundObject == null)
             {
